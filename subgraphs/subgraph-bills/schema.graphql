@@ -1,0 +1,17 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
+
+scalar Date
+
+type Query {
+  bill(id: ID!): BillDetails
+  billsByUser(userId: ID!): [BillDetails]
+}
+
+type BillDetails {
+    id: ID!
+    userId: ID!
+    cycleStart: Date!
+    cycleEnd: Date!
+    dueDate: Date!
+    balanceDue: Float!
+}

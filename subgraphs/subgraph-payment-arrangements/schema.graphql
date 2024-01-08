@@ -1,0 +1,22 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
+
+scalar Date
+
+type Query {
+  offer(id: ID!): Offer
+  offersByUser(userId: ID!): [Offer]
+}
+
+type Offer {
+    id: ID!
+    userId: ID!
+    type: OfferType!
+    expirationDate: Date!
+}
+
+enum OfferType {
+  MILITARY
+  SENIOR
+  FIRST_SUSPENSION
+  MANAGER_OVERRIDE
+}

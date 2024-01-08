@@ -1,0 +1,26 @@
+federation_version: =2.0.0
+subgraphs:
+  payment-methods:
+    routing_url: http://subgraph-payment-methods:4001
+    schema:
+      subgraph_url: http://localhost:4001
+  bills:
+    routing_url: http://subgraph-bills:4002
+    schema:
+      subgraph_url: http://localhost:4002
+  users:
+    routing_url: http://subgraph-users:4003
+    schema:
+      subgraph_url: http://localhost:4003
+  plans:
+    routing_url: http://subgraph-plans:4004
+    schema:
+      subgraph_url: http://localhost:4004
+  lines:
+    routing_url: http://subgraph-lines:4005
+    schema:
+      subgraph_url: http://localhost:4005
+  payment-arrangements:
+    routing_url: http://subgraph-payment-arrangements:4006
+    schema:
+      subgraph_url: http://localhost:4006

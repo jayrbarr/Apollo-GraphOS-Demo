@@ -1,0 +1,257 @@
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+{
+  query: Query
+}
+
+directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
+
+directive @join__field(graph: join__Graph, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true, isInterfaceObject: Boolean! = false) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on UNION
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+enum AccountType
+  @join__type(graph: PAYMENT_METHODS)
+{
+  CHECKING @join__enumValue(graph: PAYMENT_METHODS)
+  SAVINGS @join__enumValue(graph: PAYMENT_METHODS)
+}
+
+type BankAccount implements PaymentMethod
+  @join__implements(graph: PAYMENT_METHODS, interface: "PaymentMethod")
+  @join__type(graph: PAYMENT_METHODS)
+{
+  id: ID!
+  nameOfPaymentMethod: String
+  nameOnAccount: String!
+  accountNumber: String!
+  routingNumber: String!
+  accountType: AccountType!
+}
+
+type BillDetails
+  @join__type(graph: BILLS)
+{
+  id: ID!
+  userId: ID!
+  cycleStart: Date!
+  cycleEnd: Date!
+  dueDate: Date!
+  balanceDue: Float!
+}
+
+type CreditCard implements PaymentMethod
+  @join__implements(graph: PAYMENT_METHODS, interface: "PaymentMethod")
+  @join__type(graph: PAYMENT_METHODS)
+{
+  id: ID!
+  nameOfPaymentMethod: String
+  nameOnAccount: String!
+  ccNum: String!
+  expMonth: Int!
+  expYear: Int!
+  CVV: Int!
+}
+
+scalar Date
+  @join__type(graph: BILLS)
+  @join__type(graph: PAYMENT_ARRANGEMENTS)
+  @join__type(graph: PLANS)
+
+scalar join__FieldSet
+
+enum join__Graph {
+  BILLS @join__graph(name: "bills", url: "http://localhost:4002")
+  LINES @join__graph(name: "lines", url: "http://localhost:4005")
+  PAYMENT_ARRANGEMENTS @join__graph(name: "payment-arrangements", url: "http://localhost:4006")
+  PAYMENT_METHODS @join__graph(name: "payment-methods", url: "http://localhost:4001")
+  PLANS @join__graph(name: "plans", url: "http://localhost:4004")
+  USERS @join__graph(name: "users", url: "http://localhost:4003")
+}
+
+type Line
+  @join__type(graph: LINES)
+{
+  id: ID!
+  userId: ID!
+  nickname: String!
+  phoneNumber: String!
+  status: Status!
+}
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+type Offer
+  @join__type(graph: PAYMENT_ARRANGEMENTS)
+{
+  id: ID!
+  userId: ID!
+  type: OfferType!
+  expirationDate: Date!
+}
+
+enum OfferType
+  @join__type(graph: PAYMENT_ARRANGEMENTS)
+{
+  MILITARY @join__enumValue(graph: PAYMENT_ARRANGEMENTS)
+  SENIOR @join__enumValue(graph: PAYMENT_ARRANGEMENTS)
+  FIRST_SUSPENSION @join__enumValue(graph: PAYMENT_ARRANGEMENTS)
+  MANAGER_OVERRIDE @join__enumValue(graph: PAYMENT_ARRANGEMENTS)
+}
+
+interface PaymentMethod
+  @join__type(graph: PAYMENT_METHODS)
+{
+  id: ID!
+  nameOfPaymentMethod: String
+  nameOnAccount: String!
+}
+
+type Plan
+  @join__type(graph: PLANS)
+{
+  id: ID!
+  name: String!
+  features: [String]
+}
+
+type Query
+  @join__type(graph: BILLS)
+  @join__type(graph: LINES)
+  @join__type(graph: PAYMENT_ARRANGEMENTS)
+  @join__type(graph: PAYMENT_METHODS)
+  @join__type(graph: PLANS)
+  @join__type(graph: USERS)
+{
+  bill(id: ID!): BillDetails @join__field(graph: BILLS)
+  billsByUser(userId: ID!): [BillDetails] @join__field(graph: BILLS)
+  lines(id: ID!): Line @join__field(graph: LINES)
+  linesByUser(userId: ID!): [Line] @join__field(graph: LINES)
+  offer(id: ID!): Offer @join__field(graph: PAYMENT_ARRANGEMENTS)
+  offersByUser(userId: ID!): [Offer] @join__field(graph: PAYMENT_ARRANGEMENTS)
+  paymentMethod(id: ID!): PaymentMethod @join__field(graph: PAYMENT_METHODS)
+
+  """Currently logged-in user"""
+  paymentMethodsByUser(userId: ID!): [PaymentMethod] @join__field(graph: PAYMENT_METHODS)
+  plan(id: ID!): Plan @join__field(graph: PLANS)
+  planByUser(userId: ID!): Plan @join__field(graph: PLANS)
+  user(id: ID!): UserProfile @join__field(graph: USERS)
+}
+
+enum State
+  @join__type(graph: USERS)
+{
+  AL @join__enumValue(graph: USERS)
+  AK @join__enumValue(graph: USERS)
+  AZ @join__enumValue(graph: USERS)
+  AR @join__enumValue(graph: USERS)
+  CA @join__enumValue(graph: USERS)
+  CO @join__enumValue(graph: USERS)
+  CT @join__enumValue(graph: USERS)
+  DE @join__enumValue(graph: USERS)
+  FL @join__enumValue(graph: USERS)
+  GA @join__enumValue(graph: USERS)
+  HI @join__enumValue(graph: USERS)
+  ID @join__enumValue(graph: USERS)
+  IL @join__enumValue(graph: USERS)
+  IN @join__enumValue(graph: USERS)
+  IA @join__enumValue(graph: USERS)
+  KS @join__enumValue(graph: USERS)
+  KY @join__enumValue(graph: USERS)
+  LA @join__enumValue(graph: USERS)
+  ME @join__enumValue(graph: USERS)
+  MD @join__enumValue(graph: USERS)
+  MA @join__enumValue(graph: USERS)
+  MI @join__enumValue(graph: USERS)
+  MN @join__enumValue(graph: USERS)
+  MS @join__enumValue(graph: USERS)
+  MO @join__enumValue(graph: USERS)
+  MT @join__enumValue(graph: USERS)
+  NE @join__enumValue(graph: USERS)
+  NV @join__enumValue(graph: USERS)
+  NH @join__enumValue(graph: USERS)
+  NJ @join__enumValue(graph: USERS)
+  NM @join__enumValue(graph: USERS)
+  NY @join__enumValue(graph: USERS)
+  NC @join__enumValue(graph: USERS)
+  ND @join__enumValue(graph: USERS)
+  OH @join__enumValue(graph: USERS)
+  OK @join__enumValue(graph: USERS)
+  OR @join__enumValue(graph: USERS)
+  PA @join__enumValue(graph: USERS)
+  RI @join__enumValue(graph: USERS)
+  SC @join__enumValue(graph: USERS)
+  SD @join__enumValue(graph: USERS)
+  TN @join__enumValue(graph: USERS)
+  TX @join__enumValue(graph: USERS)
+  UT @join__enumValue(graph: USERS)
+  VT @join__enumValue(graph: USERS)
+  VA @join__enumValue(graph: USERS)
+  WA @join__enumValue(graph: USERS)
+  WV @join__enumValue(graph: USERS)
+  WI @join__enumValue(graph: USERS)
+  WY @join__enumValue(graph: USERS)
+  AS @join__enumValue(graph: USERS)
+  DC @join__enumValue(graph: USERS)
+  GU @join__enumValue(graph: USERS)
+  MP @join__enumValue(graph: USERS)
+  TT @join__enumValue(graph: USERS)
+  VI @join__enumValue(graph: USERS)
+}
+
+enum Status
+  @join__type(graph: LINES)
+{
+  ACTIVE @join__enumValue(graph: LINES)
+  INACTIVE @join__enumValue(graph: LINES)
+  SUSPENDED @join__enumValue(graph: LINES)
+  CANCELED @join__enumValue(graph: LINES)
+}
+
+type UserAddress
+  @join__type(graph: USERS)
+{
+  id: ID!
+  line1: String!
+  line2: String
+  city: String!
+  state: State!
+  zip: String!
+}
+
+type UserName
+  @join__type(graph: USERS)
+{
+  id: ID!
+  first: String!
+  last: String!
+  mi: String
+}
+
+type UserProfile
+  @join__type(graph: USERS)
+{
+  userName: UserName!
+  userAddress: UserAddress!
+}

@@ -1,0 +1,85 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
+
+type Query {
+  user(id: ID!): UserProfile
+}
+
+type UserProfile {
+  userName: UserName!
+  userAddress: UserAddress!
+}
+
+type UserName {
+    id: ID!
+    first: String!
+    last: String!
+    mi: String
+}
+
+type UserAddress {
+    id: ID!
+    line1: String!
+    line2: String
+    city: String!
+    state: State!
+    zip: String!
+}
+
+enum State {
+  AL
+  AK
+  AZ
+  AR
+  CA
+  CO
+  CT
+  DE
+  FL
+  GA
+  HI
+  ID
+  IL
+  IN
+  IA
+  KS
+  KY
+  LA
+  ME
+  MD
+  MA
+  MI
+  MN
+  MS
+  MO
+  MT
+  NE
+  NV
+  NH
+  NJ
+  NM
+  NY
+  NC
+  ND
+  OH
+  OK
+  OR
+  PA
+  RI
+  SC
+  SD
+  TN
+  TX
+  UT
+  VT
+  VA
+  WA
+  WV
+  WI
+  WY
+  AS
+  DC
+  GU
+  MP
+  TT
+  VI
+}

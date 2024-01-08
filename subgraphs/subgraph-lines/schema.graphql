@@ -1,0 +1,21 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
+
+type Query {
+  lines(id: ID!): Line
+  linesByUser(userId: ID!): [Line]
+}
+
+type Line {
+    id: ID!
+    userId: ID!
+    nickname: String!
+    phoneNumber: String!
+    status: Status!
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  CANCELED
+}

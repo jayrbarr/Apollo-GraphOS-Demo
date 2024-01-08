@@ -1,0 +1,20 @@
+{
+  "name": "subgraph-plans",
+  "version": "1.0.0",
+  "description": "Plans subgraph for federated supergraph AuthZ OPA demo",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jay Barr",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/datasource-rest": "^6.0.1",
+    "@apollo/server": "^4.7.5",
+    "@apollo/subgraph": "^2.4.10",
+    "@graphql-tools/mock": "^9.0.0",
+    "graphql-scalars": "^1.22.2",
+    "graphql-tag": "^2.12.6"
+  }
+}

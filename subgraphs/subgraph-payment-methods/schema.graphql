@@ -1,0 +1,36 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
+
+type Query {
+  paymentMethod(id: ID!): PaymentMethod
+  paymentMethodsByUser(userId: ID!): [PaymentMethod]
+}
+
+interface PaymentMethod {
+  id: ID!
+  nameOfPaymentMethod: String
+  nameOnAccount: String!
+}
+
+type CreditCard implements PaymentMethod {
+  id: ID!
+  nameOfPaymentMethod: String
+  nameOnAccount: String!
+  ccNum: String!
+  expMonth: Int!
+  expYear: Int!
+  CVV: Int!
+}
+
+type BankAccount implements PaymentMethod {
+  id: ID!
+  nameOfPaymentMethod: String
+  nameOnAccount: String!
+  accountNumber: String!
+  routingNumber: String!
+  accountType: AccountType!
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+}

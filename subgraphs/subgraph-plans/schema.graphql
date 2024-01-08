@@ -1,0 +1,14 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
+
+scalar Date
+
+type Query {
+  plan(id: ID!): Plan
+  planByUser(userId: ID!): Plan
+}
+
+type Plan {
+    id: ID!
+    name: String!
+    features: [String]
+}

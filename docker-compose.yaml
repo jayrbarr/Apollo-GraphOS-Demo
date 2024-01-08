@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  subgraph-payment-methods:
+    container_name: subgraph-payment-methods
+    build:
+      context: ./subgraphs/subgraph-payment-methods
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+  subgraph-bills:
+    container_name: subgraph-bills
+    build:
+      context: ./subgraphs/subgraph-bills
+      dockerfile: Dockerfile
+    ports:
+      - "4002:4002"
+  subgraph-users:
+    container_name: subgraph-users
+    build:
+      context: ./subgraphs/subgraph-users
+      dockerfile: Dockerfile
+    ports:
+      - "4003:4003"
+  subgraph-plans:
+    container_name: subgraph-plans
+    build:
+      context: ./subgraphs/subgraph-plans
+      dockerfile: Dockerfile
+    ports:
+      - "4004:4004"
+  subgraph-lines:
+    container_name: subgraph-lines
+    build:
+      context: ./subgraphs/subgraph-lines
+      dockerfile: Dockerfile
+    ports:
+      - "4005:4005"
+  subgraph-payment-arrangements:
+    container_name: subgraph-payment-arrangements
+    build:
+      context: ./subgraphs/subgraph-payment-arrangements
+      dockerfile: Dockerfile
+    ports:
+      - "4006:4006"
+  gateway:
+    container_name: gateway
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "4444:4444"
